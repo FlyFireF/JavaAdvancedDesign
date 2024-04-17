@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyfiref.dsscm.dao.ProductMapper">
+	<select id="findById" resultType="Product">
+		SELECT p.*,p.id pid,pc1.name pc1name ,pc2.name pc2name ,pc3.name pc3name
+		  FROM tb_product p,
+		       tb_product_category pc1,
+		       tb_product_category pc2,
+		       tb_product_category pc3
+		 WHERE p.categoryLevel1Id=pc1.id 
+		       AND p.categoryLevel2Id=pc2.id
+               AND p.categoryLevel3Id=pc3.id
+		 	   AND p.id=#{id} 
+	</select>
+	<select id="getProducts" resultType="Product">
+		SELECT p.*,pc1.name pc1name ,pc2.name pc2name ,pc3.name pc3name
+		  FROM tb_product p,tb_product_category pc1,tb_product_category pc2,tb_product_category pc3
+		 WHERE p.categoryLevel1Id=pc1.id 
+		       AND p.categoryLevel2Id=pc2.id
+               AND p.categoryLevel3Id=pc3.id
+			<if test="t1id != null and t1id>0">
+				and categoryLevel1Id=#{t1id}
+			</if>
+			<if test="t2id != null and t2id>0">
+				and categoryLevel2Id=#{t2id}
+			</if>
+			<if test="name != null and name != ''">
+				and p.name like CONCAT ('%',#{name},'%') 
+			</if>
+		    order by creationDate DESC
+	</select>
+	
+	<insert id="save" parameterType="Product">
+		insert into tb_product (name, description,  price,  placement, stock, 
+		              categoryLevel1Id, categoryLevel2Id, categoryLevel3Id,  fileName,  
+		              isDelete, createdBy, creationDate) 
+				values (#{name}, #{description},  #{price},  #{placement}, #{stock}, 
+		              #{categoryLevel1Id}, #{categoryLevel2Id}, #{categoryLevel3Id},  #{fileName},  
+		              #{isDelete}, #{createdBy}, #{creationDate})
+	</insert>
+	
+	<update id="update" parameterType="Product">
+	 update tb_product 
+		 <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+	 		<if test="name != null">name=#{name},</if>
+			<if test="description != null">description=#{description},</if>
+			<if test="price != null">price=#{price},</if>
+			<if test="placement != null">placement=#{placement},</if>
+			<if test="stock != null">stock=#{stock},</if>
+			<if test="categoryLevel1Id != null">categoryLevel1Id=#{categoryLevel1Id},</if>
+			<if test="categoryLevel2Id != null">categoryLevel2Id=#{categoryLevel2Id},</if>
+			<if test="categoryLevel3Id != null">categoryLevel3Id=#{categoryLevel3Id},</if>
+			<if test="fileName != null">fileName=#{fileName},</if>
+			<if test="isDelete != null">isDelete=#{isDelete},</if>
+			<if test="modifyBy != null">modifyBy=#{modifyBy},</if>
+			<if test="modifyDate != null">modifyDate=#{modifyDate},</if>
+		 </trim>
+	</update>
+	
+	<delete id="delete" >
+		delete from tb_product where id=#{id}
+	</delete>
+</mapper>

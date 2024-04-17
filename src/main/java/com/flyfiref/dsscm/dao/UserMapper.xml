@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flyfiref.dsscm.dao.UserMapper">
+
+	<select id="getLoginUser" resultType="User">
+		select * from tb_user u
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="userCode != null">
+				and u.userCode = #{userCode}
+			</if>
+		</trim>
+	</select>
+
+	<resultMap type="User" id="userList">
+		<result property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<result property="userRoleName" column="roleName" />
+	</resultMap>
+
+	<select id="getUserList" resultMap="userList">
+		select u.*,r.roleName from tb_user u,tb_role r where u.userRole
+		= r.id
+		<if test="userRole != null and userRole>0">
+			and u.userRole = #{userRole}
+		</if>
+		<if test="userName != null and userName != ''">
+			and u.userName like CONCAT ('%',#{userName},'%')
+		</if>
+		order by creationDate DESC
+	</select>
+
+	<select id="getUserCount" resultType="Int">
+		select count(1) as count from tb_user u,tb_role r where
+		u.userRole = r.id
+		<if test="userRole != null">
+			and u.userRole = #{userRole}
+		</if>
+		<if test="userName != null and userName != ''">
+			and u.userName like CONCAT ('%',#{userName},'%')
+		</if>
+	</select>
+
+	<select id="getUserById" resultType="user">
+		select u.*,r.roleName as
+		userRoleName from tb_user u,tb_role r
+		where u.id=#{id} and u.userRole = r.id
+	</select>
+
+
+	<insert id="add" parameterType="User">
+		insert into tb_user
+		(userCode,userName,userPassword,gender,birthday,phone,email,
+		address,userDesc,userRole,createdBy,creationDate,imgPath)
+		values
+		(#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{email},
+		#{address},#{userDesc},#{userRole},#{createdBy},#{creationDate},#{imgPath})
+	</insert>
+
+	<update id="modify" parameterType="User">
+		update tb_user
+		<trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+			<if test="userCode != null">userCode=#{userCode},</if>
+			<if test="userName != null">userName=#{userName},</if>
+			<if test="userPassword != null">userPassword=#{userPassword},</if>
+			<if test="gender != null">gender=#{gender},</if>
+			<if test="birthday != null">birthday=#{birthday},</if>
+			<if test="phone != null">phone=#{phone},</if>
+			<if test="email != null">email=#{email},</if>
+			<if test="address != null">address=#{address},</if>
+			<if test="userDesc != null">userDesc=#{userDesc},</if>
+			<if test="userRole != null">userRole=#{userRole},</if>
+			<if test="modifyBy != null">modifyBy=#{modifyBy},</if>
+			<if test="modifyDate != null">modifyDate=#{modifyDate},</if>
+			<if test="imgPath != null">imgPath=#{imgPath},</if>
+		</trim>
+	</update>
+
+	<update id="updatePwd" parameterType="Integer">
+		update tb_user set
+		userPassword=#{userPassword} where id=#{id}
+	</update>
+
+	<delete id="deleteUserById" parameterType="Integer">
+		delete from tb_user
+		where id=#{id}
+	</delete>
+</mapper>
