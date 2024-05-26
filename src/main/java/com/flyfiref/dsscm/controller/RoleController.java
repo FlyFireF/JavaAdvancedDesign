@@ -27,7 +27,11 @@ public class RoleController {
 
 	@Autowired
 	private RoleService roleService;
-
+	@RequestMapping(value = "/error.html")
+	public String roleError(Model model) {
+		model.addAttribute("msg","您无权访问！");
+		return "roleError";
+	}
 	@RequestMapping(value = "/list.html")
 	public String getRoleList(Model model) {
 		List<Role> roleList = null;

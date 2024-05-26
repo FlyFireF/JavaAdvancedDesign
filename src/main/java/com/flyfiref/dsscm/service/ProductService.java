@@ -1,9 +1,11 @@
 package com.flyfiref.dsscm.service;
 
+import com.flyfiref.dsscm.pojo.Order;
 import com.flyfiref.dsscm.pojo.Product;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 public interface ProductService {
@@ -42,5 +44,18 @@ public interface ProductService {
 	 * @throws SQLException
 	 */
 	public int update(Product product) throws SQLException;
-	
+
+	/**
+	 * 通过条件查询-商品表记录数
+	 * @return
+	 * @throws Exception
+	 */
+	public int getproductCount() throws Exception;
+
+	/**
+	 * 获取订单及其下属的详情记录
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Product> getProductList()  throws SQLException;
 }

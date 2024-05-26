@@ -1,14 +1,16 @@
 package com.flyfiref.dsscm.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.flyfiref.dsscm.pojo.Product;
 import com.flyfiref.dsscm.pojo.ProductCategory;
 import com.flyfiref.dsscm.pojo.User;
 import com.flyfiref.dsscm.service.ProductCategoryService;
 import com.flyfiref.dsscm.service.ProductService;
 import com.flyfiref.dsscm.tools.Constants;
-import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 import com.mysql.cj.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/sys/product")
@@ -52,7 +53,7 @@ public class ProductController {
 		try {
 			ppi = productService.getProducts(categoryLevel1Id, null, queryName,
 					pageIndex, pageSize);
-			pcList = productCategoryService.getRootCategories(0L);
+			pcList = productCategoryService.getRootCategories(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,7 +64,95 @@ public class ProductController {
 		model.addAttribute("categoryLevel1Id", categoryLevel1Id);
 		return "productlist";
 	}
-	
+	@RequestMapping("/update.html")
+	@ResponseBody
+	public Map getupdateList(@RequestParam(value = "queryname", required = false) String queryName,
+							 @RequestParam(value = "categoryLevel1Id", required = false) Long categoryLevel1Id,
+							 @RequestParam(value = "pageIndex", required = false) Integer pageIndex) {
+		PageInfo<Product> ppi = null;
+		List<ProductCategory> pcList = null;
+		// 设置页面容量
+		int pageSize = Constants.pageSize;
+		// 页码为空默认分第一页
+		if (null == pageIndex) {
+			pageIndex = 1;
+		}
+		if (queryName == null) {
+			queryName = "";
+		}
+		try {
+			ppi = productService.getProducts(categoryLevel1Id, null, queryName,
+					pageIndex, pageSize);
+			pcList = productCategoryService.getRootCategories(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		// 将用户列表转换成HTML格式的字符串返回给前端
+		String productListHtml = convertProductListToHtml(ppi, pcList, queryName, categoryLevel1Id);
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("productListHtml", productListHtml);
+		return map;
+	}
+	private String getCategoryName(Long categoryId) {
+		String categoryName = "";
+		try {
+			// 执行联表查询，根据分类ID查询对应的分类名称
+			ProductCategory productCategory = productCategoryService.findById(Math.toIntExact(categoryId));
+			if (productCategory != null) {
+				categoryName = productCategory.getName();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return categoryName;
+	}
+
+
+	// 将用户列表转换成HTML格式的方法
+	private String convertProductListToHtml(PageInfo<Product> ppi, List<ProductCategory> pcList, String queryname, Long categoryLevel1Id) {
+		StringBuilder htmlBuilder = new StringBuilder();
+
+		// 在这里添加HTML头部，例如表格的开始标签和表头
+		htmlBuilder.append("<table class='table table-striped'>");
+		htmlBuilder.append("<thead>");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>商品编码</th>");
+		htmlBuilder.append("<th>商品名称</th>");
+		htmlBuilder.append("<th>单价</th>");
+		htmlBuilder.append("<th>摆放位置</th>");
+		htmlBuilder.append("<th>数量</th>");
+		htmlBuilder.append("<th>一级分类名称</th>");
+		htmlBuilder.append("<th>二级分类名称</th>");
+		htmlBuilder.append("<th>三级分类名称</th>");
+		htmlBuilder.append("</tr>");
+		htmlBuilder.append("</thead>");
+		htmlBuilder.append("<tbody>");
+
+		// 遍历用户列表数据，将每个用户的信息添加到HTML中
+		for (Product product : ppi.getList()) {
+			htmlBuilder.append("<tr>");
+			htmlBuilder.append("<td>").append(product.getId()).append("</td>");
+			htmlBuilder.append("<td>").append(product.getName()).append("</td>");
+			htmlBuilder.append("<td>").append(product.getPrice()).append("</td>");
+			htmlBuilder.append("<td>").append(product.getPlacement()).append("</td>");
+			htmlBuilder.append("<td>").append(product.getStock()).append("</td>");
+			// 添加一级分类名称
+			htmlBuilder.append("<td>").append(getCategoryName(product.getCategoryLevel1Id())).append("</td>");
+			// 添加二级分类名称
+			htmlBuilder.append("<td>").append(getCategoryName(product.getCategoryLevel2Id())).append("</td>");
+			// 添加三级分类名称
+			htmlBuilder.append("<td>").append(getCategoryName(product.getCategoryLevel3Id())).append("</td>");
+			htmlBuilder.append("</tr>");
+		}
+
+		// 在这里添加HTML尾部，例如表格的结束标签
+		htmlBuilder.append("</tbody>");
+		htmlBuilder.append("</table>");
+
+		return htmlBuilder.toString();
+	}
 	@RequestMapping("/productcategorylist.html")
 	public String productcategorylist(Model model) {
 
@@ -223,7 +312,8 @@ public class ProductController {
 
 	@RequestMapping("/pclist.json")
 	@ResponseBody
-	public Object getcategoryLevel(@RequestParam("cid") Long cid) {
+	// zhr: Long 改 Integer，因为数据库内的类型是int，用long类型不匹配会报错
+	public Object getcategoryLevel(@RequestParam("cid") Integer cid) {
 		List<ProductCategory> list = null;
 		try {
 			list = productCategoryService.getRootCategories(cid);
@@ -297,6 +387,7 @@ public class ProductController {
 						if (!targetFile.exists()) {
 							targetFile.mkdirs();
 						}
+						// zhr: 删除了一部分对filename的修改，原先的代码试图将filename存为绝对路径，实际上只需要文件名
 						// 保存
 						try {
 							attach.transferTo(targetFile);
@@ -305,10 +396,6 @@ public class ProductController {
 							request.setAttribute(errorInfo, " * 上传失败！");
 							flag = false;
 						}
-						if (i == 0) {
-							fileName = path + File.separator
-									+ fileName;
-						} 
 					} else {
 						request.setAttribute(errorInfo, " * 上传图片格式不正确");
 						flag = false;
@@ -341,14 +428,17 @@ public class ProductController {
 			resultMap.put("delResult", "notexist");
 		} else {
 			try {
-				if (productCategoryService.delete(Long.parseLong(id)) == 1)
+				if (productCategoryService.delete(Integer.parseInt(id)) >= 1)
 					resultMap.put("delResult", "true");
 				else
 					resultMap.put("delResult", "false");
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		System.out.println(resultMap);
 		return JSONArray.toJSONString(resultMap);
 	}
 	

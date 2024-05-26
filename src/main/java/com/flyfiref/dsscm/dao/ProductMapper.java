@@ -1,5 +1,6 @@
 package com.flyfiref.dsscm.dao;
 
+import com.flyfiref.dsscm.pojo.Order;
 import com.flyfiref.dsscm.pojo.Product;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,5 +43,19 @@ public interface ProductMapper {
 	 * @throws SQLException
 	 */
 	public int update(Product product) throws SQLException;
+
+	/**
+	 * 通过条件查询-商品表记录数
+	 * @return
+	 * @throws Exception
+	 */
+	public int getProductCount()throws Exception;
+
+	/**
+	 *
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Product> getProductList() throws SQLException;
 	
 }

@@ -7,6 +7,7 @@ var cl2 = null;
 var cl3 = null;
 var saveBtn = null;
 var backBtn = null;
+var m_fileName = null
 
 $(function() {
 	pname = $("#pname");
@@ -18,6 +19,7 @@ $(function() {
 	cl3 = $("#categoryLevel3Id");
 	saveBtn = $("#save");
 	backBtn = $("#back");
+	m_fileName = $("#m_fileName");
 	// 初始化的时候，要把所有的提示信息变为：* 以提示必填项，更灵活，不要写在页面上
 	pname.next().html("*");
 	price.next().html("*");
@@ -236,26 +238,9 @@ $(function() {
 		}
 	});
 	saveBtn.bind("click", function() {
-		if (pname.attr("validateStatus") != "true") {
-			name.blur();
-		}/*
-			 * else if(price.attr("validateStatus") != "true"){ price.blur(); }
-			 */
-		else if (stock.attr("validateStatus") != "true") {
-			stock.blur();
-		} else if (placement.attr("validateStatus") != "true") {
-			placement.blur();
-		} else if (cl1.attr("validateStatus") != "true") {
-			cl1.blur();
-		} else if (cl2.attr("validateStatus") != "true") {
-			cl2.blur();
-		} else if (cl3.attr("validateStatus") != "true") {
-			cl3.blur();
-		} else {
 			if (confirm("是否确认提交数据")) {
 				$("#productForm").submit();
 			}
-		}
 	});
 
 	backBtn.on("click", function() {
@@ -264,6 +249,24 @@ $(function() {
 			window.location.href = referer;
 		} else {
 			history.back(-1);
+		}
+	});
+
+	// zhr
+	// 预览图片
+	m_fileName.on("change", function(event) {
+		var input = event.target;
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				avatar = document.getElementById('avatar');
+				avatar.src = e.target.result;
+				console.log("已更换图片", avatar)
+			};
+			reader.onerror = function () {
+				console.error("更换图片失败");
+			}
+			reader.readAsDataURL(input.files[0]);
 		}
 	});
 });

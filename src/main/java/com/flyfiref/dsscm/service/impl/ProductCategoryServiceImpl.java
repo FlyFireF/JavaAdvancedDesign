@@ -5,6 +5,7 @@ import com.flyfiref.dsscm.pojo.ProductCategory;
 import com.flyfiref.dsscm.service.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
 	private ProductCategoryMapper productCategoryMapper;
 	
 	@Override
-	public ProductCategory findById(long id) throws SQLException {
+	public ProductCategory findById(Integer id) throws SQLException {
 		return productCategoryMapper.findById(id);
 	}
 
@@ -30,13 +31,34 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
 //	}
 
 	@Override
-	public List<ProductCategory> getRootCategories(Long parentId) throws SQLException {
+	public List<ProductCategory> getRootCategories(Integer parentId) throws SQLException {
 		return productCategoryMapper.getRootCategories(parentId);
 	}
 
 	@Override
-	public int delete(long id) throws SQLException {
-		return productCategoryMapper.delete(id);
+	@Transactional
+	public int delete(Integer id) throws SQLException {
+		// zhr: 在删除标签时会递归删除其下的所有子标签
+		ProductCategory pc = productCategoryMapper.findById(id);
+		if (pc.getType() == 3) {
+            return productCategoryMapper.delete(id);
+        } else if (pc.getType() == 2) {
+			return productCategoryMapper.delete(id) +
+					productCategoryMapper.deleteList(productCategoryMapper.findChildren(id));
+		} else {
+			int res = productCategoryMapper.delete(id);
+			List<Integer> pc2List = productCategoryMapper.findChildren(id);
+			if (pc2List.size() > 0) {
+				res += productCategoryMapper.deleteList(pc2List);
+			}
+            for (Integer pc2 : pc2List) {
+                List<Integer> pc3List = productCategoryMapper.findChildren(pc2);
+                if (pc3List.size() > 0) {
+                    res += productCategoryMapper.deleteList(pc3List);
+                }
+            }
+			return res;
+		}
 	}
 
 	@Override

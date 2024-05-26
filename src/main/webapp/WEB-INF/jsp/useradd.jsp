@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/common/head.jsp"%>
 
 <div class="content">
@@ -22,8 +22,8 @@
 							</div>
 							<div class="content">
 								<form id="userForm" name="userForm" method="post"
-									action="${pageContext.request.contextPath }/sys/user/addsave.html"
-									enctype="multipart/form-data">
+									  action="${pageContext.request.contextPath }/sys/user/addsave.html"
+									  enctype="multipart/form-data">
 
 									<div class="row">
 										<div class="col-md-4">
@@ -37,19 +37,19 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="exampleInputEmail1">用户编码 <small>
-														UserCode</small> </label> <input type="text"
-													class="form-control border-input" placeholder="请输入用户编码"
-													name="userCode" id="userCode"><font color="red"></font>
+													UserCode</small> </label> <input type="text"
+																					 class="form-control border-input" placeholder="请输入用户编码"
+																					 name="userCode" id="userCode"><font color="red"></font>
 											</div>
 										</div>
 										<div class="col-md-3">
 											<div class="form-group">
 												<label>性别 <small> Gender</small> </label> <select
 													class="form-control border-input" name="gender" id="gender">
-													<option value="">- - - 请选择 - - -</option>
-													<option value="2">男</option>
-													<option value="1">女</option>
-												</select>
+												<option value="">- - - 请选择 - - -</option>
+												<option value="2">男</option>
+												<option value="1">女</option>
+											</select>
 											</div>
 										</div>
 									</div>
@@ -58,9 +58,9 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInputEmail1">邮箱地址 <small>
-														Email Address</small> </label> <input type="email"
-													class="form-control border-input" placeholder="Email"
-													name="email" id="email">
+													Email Address</small> </label> <input type="email"
+																						  class="form-control border-input" placeholder="Email"
+																						  name="email" id="email">
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -111,10 +111,19 @@
 										</div>
 										<div class="col-md-4">
 											<div class="form-group">
-												<label>用户角色 <small> UserRole</small> </label> <select
-													class="form-control border-input" name="userRole"
-													id="userRole">
-												</select><font color="red"></font>
+												<label>用户角色 <small> UserRole</small> </label>
+												<select class="form-control border-input" name="userRole" id="userRole">
+													<option value="">- - - 请选择 - - -</option>
+													<option value="1">系统管理员</option>
+													<option value="2">经理</option>
+													<option value="3">普通员工</option>
+													<option value="4">人事部员工</option>
+													<option value="5">采购部员工</option>
+													<option value="6">物资部员工</option>
+													<option value="7">销售部员工</option>
+												</select>
+
+											</select><font color="red"></font>
 											</div>
 										</div>
 										<div class="col-md-4">
@@ -131,8 +140,8 @@
 											<div class="form-group">
 												<label>个人简介</label>
 												<textarea rows="5" class="form-control border-input"
-													placeholder="Here can be your description" name="userDesc"
-													id="userDesc"></textarea>
+														  placeholder="Here can be your description" name="userDesc"
+														  id="userDesc"></textarea>
 											</div>
 										</div>
 									</div>
@@ -156,4 +165,4 @@
 	$(".sidebar-wrapper .nav li:eq(5)").addClass("active");
 </script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/statics/js/useradd.js"></script>
+		src="${pageContext.request.contextPath }/statics/js/useradd.js"></script>

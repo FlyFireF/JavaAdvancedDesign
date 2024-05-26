@@ -34,12 +34,12 @@ public interface ProviderMapper {
 	
 	/**
 	 * 通过条件查询-供应商表记录数
-	 * @param proName
-	 * @param proCode
+//	 * @param proName
+//	 * @param proCode
 	 * @return
 	 * @throws Exception
 	 */
-	public int getProviderCount(@Param("proName")String proName,@Param("proCode")String proCode)throws Exception;
+	public int getProviderCount()throws Exception;
 	
 	/**
 	 * 通过供应商id删除供应商信息

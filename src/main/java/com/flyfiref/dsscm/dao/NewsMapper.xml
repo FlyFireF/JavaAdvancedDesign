@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flyfiref.dsscm.dao.NewsMapper">
+    <resultMap type="News" id="newsList">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="creationDate" column="creationDate"/>
+        <result property="modifyBy" column="modifyBy"/>
+        <result property="modifyDate" column="modifyDate"/>
+    </resultMap>
+
+
+    <select id="getAllNews" resultMap="newsList">
+        select * from tb_news
+        order by creationDate
+    </select>
+
+    <select id="getNewsById" resultType="News">
+        select * from tb_news
+        where id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="Long">
+        delete from tb_news where id=#{id}
+    </delete>
+
+    <insert id="add" parameterType="News">
+        insert into tb_news (title,content,creationDate)
+        values (#{title},#{content},#{creationDate})
+    </insert>
+
+    <update id="update" parameterType="News">
+        update tb_news
+        <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+            <if test="title != null">title=#{title},</if>
+            <if test="content != null">content=#{content},</if>
+        </trim>
+    </update>
+
+
+</mapper>

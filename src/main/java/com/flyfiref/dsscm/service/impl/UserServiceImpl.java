@@ -3,6 +3,7 @@ package com.flyfiref.dsscm.service.impl;
 import com.flyfiref.dsscm.dao.UserMapper;
 import com.flyfiref.dsscm.pojo.User;
 import com.flyfiref.dsscm.service.UserService;
+import com.flyfiref.dsscm.tools.RsaUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	
 	@Override
-	public User login(String userCode, String userPassword) throws Exception {
-		// TODO Auto-generated method stub
+	public User login(String userCode, String userPassword, String priKey) throws Exception {
 		User user = null;
 		user = userMapper.getLoginUser(userCode);
 		//匹配密码
 		if(null != user){
-			if(!user.getUserPassword().equals(userPassword))
+			String dec = RsaUtil.decryptByPrivateKey(user.getUserPassword(),priKey);
+			if(!dec.equals(userPassword))
 				user = null;
 		}
 		return user;

@@ -21,6 +21,11 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+	public List<Order> getOrder() throws SQLException {
+		return orderMapper.getOrder();
+	}
+
+	@Override
 	public int saveOrder(Order order) throws SQLException {
 		return orderMapper.saveOrder(order);
 	}
@@ -48,6 +53,13 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public int updateOrderDetails(OrderDetail detail) throws SQLException {
 		return orderMapper.updateOrderDetails(detail);
+	}
+
+	@Override
+	public int getorderCount()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return orderMapper.getOrderCount();
 	}
 
 }

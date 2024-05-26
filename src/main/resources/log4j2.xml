@@ -4,8 +4,7 @@
         <property name="LOG_HOME">/WEB-INF/logs</property>
         <property name="FILE_NAME">finance-pay</property>
     </properties>
-
-
+<!--OFF、FATAL、ERROR、WARN、INFO、DEBUG、TRACE、ALL-->
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
@@ -25,10 +24,10 @@
     </Appenders>
     <Loggers>
 
-         <Logger name="cn.dsscm" level="trace" additivity="true">
+         <Logger name="cn.dsscm" level="INFO" additivity="true">
             <AppenderRef ref="running-log" /> </Logger>
 
-        <Root level="debug">
+        <Root level="INFO">
             <!-- 这里是输入到文件，很重要-->
             <AppenderRef ref="running-log" />
             <!-- 这里是输入到控制台-->

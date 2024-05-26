@@ -32,9 +32,9 @@
 <link href="${pageContext.request.contextPath }/statics/css/demo.css"
 	rel="stylesheet" />
 <!--  Fonts and icons     -->
-<link
+<%--<link
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
-	rel="stylesheet">
+	rel="stylesheet">--%>
 <link href='https://fonts.googleapis.com/css?family=Muli:400,300'
 	rel='stylesheet' type='text/css'>
 <link
@@ -80,9 +80,9 @@
 							<i class="ti-key"></i>
 							<p>用户权限</p> </a></li>
 
-					<li><a href="#"> <i class="ti-comments"></i>
+					<li><a href="${pageContext.request.contextPath }/sys/news/list.html"> <i class="ti-comments"></i>
 							<p>新闻管理</p> </a></li>
-					<li><a href="#"> <i class="ti-notepad"></i>
+					<li><a href="${pageContext.request.contextPath }/sys/info/list.html"> <i class="ti-notepad"></i>
 							<p>信息查询</p> </a></li>
 					<li class="active-pro"><a
 						href="${pageContext.request.contextPath }/logout.html"> <i
@@ -115,14 +115,10 @@
 									<p>${userSession.userName }</p> </a></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown"> <i class="ti-bell"></i>
-									<p class="notification">5</p>
+									<p class="notification"></p>
 									<p>信息</p> <b class="caret"></b> </a>
 								<ul class="dropdown-menu">
-									<li><a href="#">Notification 1</a></li>
-									<li><a href="#">Notification 2</a></li>
-									<li><a href="#">Notification 3</a></li>
-									<li><a href="#">Notification 4</a></li>
-									<li><a href="#">Another notification</a></li>
+									<li><a href="${pageContext.request.contextPath }/sys/info/list.html">全部信息</a></li>
 								</ul></li>
 							<li><a
 								href="${pageContext.request.contextPath }/sys/user/pwdmodify.html">

@@ -109,17 +109,17 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label>用户照片 <small> Photograph</small> </label>
+<%--									zhr: 和product modify修改逻辑相同--%>
 										<c:choose>
-											<c:when test="${user.imgPath == null || user.imgPath == ''}">
+											<c:when
+													test="${user.imgPath == null || user.imgPath == ''}">
 												<input type="hidden" id="errorinfo"
-													value="${uploadFileError}" />
-												<input type="file" name="attachs" id="m_imgPath" />
+													   value="${uploadFileError}" />
 												<font color="red"></font>
 											</c:when>
-											<c:otherwise>
-												<img src="${user.imgPath}" width="300px"/>
-											</c:otherwise>
 										</c:choose>
+										<img src="${user.imgPath}" width="200px" id="avatar"/>
+										<input type="file" name="attachs" id="m_imgPath" />
 									</div>
 								</div>
 							</div>

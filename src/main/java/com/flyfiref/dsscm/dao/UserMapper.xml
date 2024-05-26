@@ -83,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</trim>
 	</update>
 
-	<update id="updatePwd" parameterType="Integer">
+	<update id="updatePwd">
 		update tb_user set
 		userPassword=#{userPassword} where id=#{id}
 	</update>

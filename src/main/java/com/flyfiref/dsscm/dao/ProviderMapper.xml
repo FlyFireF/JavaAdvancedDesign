@@ -26,10 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(1) as count from tb_provider p
 		<where>
 			<if test="proName != null and proName != ''">
-				and p.proName like CONCAT ('%',#{proName},'%') 
 			</if>
 			<if test="proCode != null and proCode != ''">
-				and p.proCode like CONCAT ('%',#{proCode},'%') 
 			</if>
 		</where>
 	</select>

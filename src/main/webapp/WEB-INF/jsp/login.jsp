@@ -26,22 +26,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                <div class="input username" id="username">
 	                    <label for="userCode">用户名</label>
 	                    <span></span>
-	                    <input type="text" id="userCode" name="userCode" required/>
+	                    <input type="text" id="userCode" name="userCode" value="${cookie.loginAct.value}" required/>
 	                </div>
 	                <div class="input psw" id="userPasswordInput">
 	                    <%--@declare id="password"--%><label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
 	                    <span></span>
-	                    <input type="password" id="userPassword" name="userPassword" required/>
+	                    <input type="password" id="userPassword" name="userPassword" value="${cookie.loginPwd.value}" required/>
 	                </div>
 	                <div id="btn" class="loginButton">
 	                    <input type="submit" class="button" value="登录"  />
 	                </div>
+					<!--十天内记住密码-->
+					<div class="isPwdRem"><label>
+						<input type="checkbox" name="isPwdRem"/>
+					十天内记住密码</label></div>
+					<div class="usrOrPwdErr"><font color="red">${error}</font></div>
 	            </div>
             </form>
         </div>
-        <div id="ft">Copyright &copy; 2020. 百货中心供应链管理系统.</div>
+        <div id="ft">Copyright &copy; 2024. 百货中心供应链管理系统.</div>
     </div>
-   
 </div>
 
 
@@ -57,7 +61,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$('#bd').css('padding-top', bdheight);
     });
 	$('select').select();
-
 </script>
 </body>
 </html>

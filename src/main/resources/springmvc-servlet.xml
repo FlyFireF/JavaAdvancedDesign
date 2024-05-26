@@ -39,7 +39,7 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-	<mvc:resources location="/statics/" mapping="/statics/**"></mvc:resources>
+	<mvc:resources location="/statics/" mapping="/statics/**"/>
 
 	<!-- 配置多视图解析器：允许同样的内容数据呈现不同的view -->
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
@@ -72,6 +72,18 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/sys/**" />
 			<bean class="com.flyfiref.dsscm.interceptor.SysInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/sys/role/**" />
+			<mvc:exclude-mapping path="/sys/role/error.html"/>
+			<bean class="com.flyfiref.dsscm.interceptor.RoleInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/sys/user/**" />
+			<mvc:exclude-mapping path="/sys/user/pwdmodify.html"/>
+			<mvc:exclude-mapping path="/sys/user/pwdmodify.json"/>
+			<mvc:exclude-mapping path="/sys/user/pwdsave.html"/>
+			<bean class="com.flyfiref.dsscm.interceptor.UserInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 

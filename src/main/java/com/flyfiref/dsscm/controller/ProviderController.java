@@ -22,6 +22,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/sys/provider")
@@ -74,6 +76,88 @@ public class ProviderController extends BaseController {
 		model.addAttribute("queryProName", queryProName);
 		model.addAttribute("currentPageNo", currentPageNo);
 		return "providerlist";
+	}
+	@RequestMapping("/update.html")
+	@ResponseBody
+	public Object getupdateList(@RequestParam(value = "queryProCode", required = false) String queryProCode,
+								@RequestParam(value = "queryProName", required = false) String queryProName,
+								@RequestParam(value = "pageIndex", required = false) String pageIndex) {
+		logger.info("getProviderList ---- > queryProCode: " + queryProCode);
+		logger.info("getProviderList ---- > queryProName: " + queryProName);
+		logger.info("getProviderList ---- > pageIndex: " + pageIndex);
+		PageInfo<Provider> pi = null;
+		List<Provider> providerList = null;
+		// 设置页面容量
+		int pageSize = Constants.pageSize;
+		// 当前页码
+		int currentPageNo = 1;
+
+		if (queryProCode == null) {
+			queryProCode = "";
+		}
+		if (queryProName == null) {
+			queryProName = "";
+		}
+		if (pageIndex != null) {
+			try {
+				currentPageNo = Integer.valueOf(pageIndex);
+			} catch (NumberFormatException e) {
+				return "redirect:/sys/provider/syserror.html";
+			}
+		}
+		try {
+			pi = providerService.getProviderList(queryProName,queryProCode,currentPageNo,pageSize);
+			providerList = providerService.getProviderList();
+			for (Provider p : pi.getList()) {
+				System.out.println("---p ----"+p);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 将用户列表转换成HTML格式的字符串返回给前端
+		String providerListHtml = convertProviderListToHtml(pi, providerList,queryProCode, queryProName);
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("providerListHtml", providerListHtml);
+		return map;
+	}
+
+	// 将用户列表转换成HTML格式的方法
+	private String convertProviderListToHtml(PageInfo<Provider> pi, List<Provider> providerList, String queryProCode, String queryProName) {
+		StringBuilder htmlBuilder = new StringBuilder();
+
+		// 在这里添加HTML头部，例如表格的开始标签和表头
+		htmlBuilder.append("<table class='table table-striped'>");
+		htmlBuilder.append("<thead>");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>供应商编码</th>");
+		htmlBuilder.append("<th>供应商名称</th>");
+		htmlBuilder.append("<th>联系人</th>");
+		htmlBuilder.append("<th>联系电话</th>");
+		htmlBuilder.append("<th>传真</th>");
+		htmlBuilder.append("<th>创建时间</th>");
+		htmlBuilder.append("</tr>");
+		htmlBuilder.append("</thead>");
+		htmlBuilder.append("<tbody>");
+
+		// 遍历用户列表数据，将每个用户的信息添加到HTML中
+		for (Provider provider : pi.getList()) {
+			htmlBuilder.append("<tr>");
+			htmlBuilder.append("<td>").append(provider.getProCode()).append("</td>");
+			htmlBuilder.append("<td>").append(provider.getProName()).append("</td>");
+			htmlBuilder.append("<td>").append(provider.getProContact()).append("</td>");
+			htmlBuilder.append("<td>").append(provider.getProPhone()).append("</td>");
+			htmlBuilder.append("<td>").append(provider.getProFax()).append("</td>");
+			htmlBuilder.append("<td>").append(provider.getCreationDate()).append("</td>");
+			htmlBuilder.append("</tr>");
+		}
+
+		// 在这里添加HTML尾部，例如表格的结束标签
+		htmlBuilder.append("</tbody>");
+		htmlBuilder.append("</table>");
+
+		return htmlBuilder.toString();
 	}
 
 	@RequestMapping(value = "/syserror.html")
@@ -208,11 +292,11 @@ public class ProviderController extends BaseController {
 							request.setAttribute(errorInfo, " * 上传失败！");
 							flag = false;
 						}
+						// zhr: 和product modify修改逻辑相同
 						if (i == 0) {
-							companyLicPicPath = path + File.separator
-									+ fileName;
+							companyLicPicPath = fileName;
 						} else if (i == 1) {
-							orgCodePicPath = path + File.separator + fileName;
+							orgCodePicPath = fileName;
 						}
 						logger.debug("companyLicPicPath: " + companyLicPicPath);
 						logger.debug("orgCodePicPath: " + orgCodePicPath);

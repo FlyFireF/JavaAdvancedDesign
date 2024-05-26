@@ -20,14 +20,14 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label>商品名称： </label><br> <input type="text"
-											class="form-control border-input" name="queryProductName"
+											class="form-control border-input" name="queryProductName" id="queryProductName"
 											value="${queryProductName }">
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
 										<label>供应商： &nbsp;&nbsp;</label> <br> <select
-											name="queryProviderId" class="form-control border-input">
+											name="queryProviderId" id="queryProviderId"class="form-control border-input">
 											<c:if test="${providerList != null }">
 												<option value="">--请选择--</option>
 												<c:forEach var="provider" items="${providerList}">
@@ -42,7 +42,7 @@
 								<div class="col-md-2">
 									<div class="form-group">
 										<label for="exampleInputEmail1">是否付款： &nbsp;&nbsp;</label><br>
-										<select name="queryIsPayment"
+										<select name="queryIsPayment"id="queryIsPayment"
 											class="form-control border-input">
 											<option value="">--请选择--</option>
 											<option value="1" ${queryIsPayment== 1 ? "selected=\"selected\"":"" }>未付款</option>
@@ -124,6 +124,33 @@
 <%@include file="/WEB-INF/jsp/common/foot.jsp"%>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(2)").addClass("active");
+	// 在页面加载完毕后执行
+	$(document).ready(function() {
+		// 监听输入框和下拉框的变化事件
+		$('#queryProductName, #queryProviderId,#queryIsPayment').on('change', function () {
+			console.log(111)
+			// 获取输入框和下拉框的值
+			var queryProductName = $('#queryProductName').val();
+			var queryProviderId = $('#queryProviderId').val();
+			var queryIsPayment = $('#queryIsPayment').val();
+			// 发送 AJAX 请求到后端进行信息查询更新
+			$.ajax({
+				type: 'POST',
+				url: '${pageContext.request.contextPath }/sys/bill/update.html',
+				dataType:'json',
+				data: {
+					queryProductName: queryProductName,
+					queryProviderId: queryProviderId,
+					queryIsPayment: queryIsPayment,
+					pageIndex: 1 // 重置页码为1
+				},
+				success: function (data) {
+					// 将查询结果更新到页面
+					$('.table-responsive').html(data.billListHtml);
+				}
+			});
+		});
+	});
 </script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/statics/js/billlist.js"></script>

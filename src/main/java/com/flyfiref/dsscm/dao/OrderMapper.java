@@ -15,6 +15,13 @@ public interface OrderMapper {
 	 */
 	public List<Order> getOrders(@Param("oid")long id,
 			@Param("userName")String userName,@Param("status")Integer status) throws SQLException;
+
+	/**
+	 * 获取订单及其下属的详情记录
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Order> getOrder() throws SQLException;
 	/**
 	 * 保存订单
 	 * @param order
@@ -49,5 +56,14 @@ public interface OrderMapper {
 	 * @throws SQLException
 	 */
 	public int updateOrderDetails(OrderDetail detail) throws SQLException;
+
+	/**
+	 * 通过条件查询-订单表记录数
+	 * @return
+	 * @throws Exception
+	 */
+	public int getOrderCount()throws Exception;
+
+
 	
 }

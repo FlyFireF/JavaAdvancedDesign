@@ -142,4 +142,20 @@ $(function() {
 			history.back(-1);
 		}
 	});
+
+	// zhr: 和product modify修改逻辑相同
+	$("#m_imgPath").on("change", function(event) {
+		var input = event.target;
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				avatar = document.getElementById('avatar');
+				avatar.src = e.target.result;
+			};
+			reader.onerror = function () {
+				console.error("更换图片失败");
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	});
 });

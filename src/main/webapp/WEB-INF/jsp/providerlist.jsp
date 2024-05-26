@@ -98,6 +98,30 @@
 <%@include file="/WEB-INF/jsp/common/foot.jsp"%>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(4)").addClass("active");
+	// 在页面加载完毕后执行
+	$(document).ready(function() {
+		// 监听用户名输入框和用户权限下拉框的变化事件
+		$('#queryProCode, #queryProName').on('change', function () {
+			// 获取输入框和下拉框的值
+			var queryProCode = $('#queryProCode').val();
+			var queryProName = $('#queryProName').val();
+			// 发送 AJAX 请求到后端进行信息查询更新
+			$.ajax({
+				type: 'POST',
+				url: '${pageContext.request.contextPath }/sys/provider/update.html',
+				dataType:'json',
+				data: {
+					queryProCode: queryProCode,
+					queryProName: queryProName,
+					pageIndex: 1 // 重置页码为1
+				},
+				success: function (data) {
+					// 将查询结果更新到页面
+					$('.table-responsive').html(data.providerListHtml);
+				}
+			});
+		});
+	});
 </script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/statics/js/providerlist.js"></script>

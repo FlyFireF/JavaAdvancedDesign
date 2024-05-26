@@ -62,31 +62,30 @@
 							</div>
 							<div class="col-md-6">
 								<label for="m_companyLicPicPath">企业营业执照：</label>
+<%--								zhr: 和product modify修改逻辑相同--%>
 								<c:choose>
 									<c:when
-										test="${provider.companyLicPicPath == null || provider.companyLicPicPath == ''}">
-										<input type="hidden" id="errorinfo" value="${uploadFileError}" />
-										<input type="file" name="attachs" id="m_companyLicPicPath" />
+											test="${provider.companyLicPicPath == null || provider.companyLicPicPath == ''}">
+										<input type="hidden" id="errorinfo"
+											   value="${uploadFileError}" />
 										<font color="red"></font>
 									</c:when>
-									<c:otherwise>
-										<img src="${provider.companyLicPicPath}" width="200px" />
-									</c:otherwise>
 								</c:choose>
+								<img src="${provider.companyLicPicPath}" width="200px" id="avatar1"/>
+								<input type="file" name="attachs" id="m_companyLicPicPath" />
 							</div>
 							<div class="col-md-6">
 								<label for="m_orgCodePicPath">组织机构代码证：</label>
 								<c:choose>
 									<c:when
-										test="${provider.orgCodePicPath == null || provider.orgCodePicPath == ''}">
-										<input type="hidden" id="errorinfo" value="${uploadFileError}" />
-										<input type="file" name="attachs" id="m_orgCodePicPath" />
+											test="${provider.orgCodePicPath == null || provider.orgCodePicPath == ''}">
+										<input type="hidden" id="errorinfo"
+											   value="${uploadFileError}" />
 										<font color="red"></font>
 									</c:when>
-									<c:otherwise>
-										<img src="${provider.orgCodePicPath}" width="200px" />
-									</c:otherwise>
 								</c:choose>
+								<img src="${provider.orgCodePicPath}" width="200px" id="avatar2"/>
+								<input type="file" name="attachs" id="m_orgCodePicPath" />
 							</div>
 							<div class="col-md-6 col-offset-md-3">
 								<input type="button" name="save" id="save" value="保  存"

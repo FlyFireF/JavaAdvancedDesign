@@ -3,6 +3,18 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.flyfiref.dsscm.dao.ProductMapper">
+
+	<resultMap type="Product" id="productorderdetail">
+		<id column="pid" property="id"/>
+		<result column="categoryLevel1Id" property="categoryLevel1Id"/>
+		<result column="pc1name" property="pc1name"/>
+		<collection property="orderDetail" ofType="OrderDetail">
+			<id column="odid" property="id"/>
+			<result column="odcost" property="cost"/>
+		</collection>
+	</resultMap>
+
+
 	<select id="findById" resultType="Product">
 		SELECT p.*,p.id pid,pc1.name pc1name ,pc2.name pc2name ,pc3.name pc3name
 		  FROM tb_product p,
@@ -62,4 +74,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delete" >
 		delete from tb_product where id=#{id}
 	</delete>
+
+	<select id="getProductCount" resultType="Int">
+		select count(1) as count from tb_product p
+		<where>
+			<if test="id != null and id != ''">
+			</if>
+			<if test="name != null and name != ''">
+			</if>
+		</where>
+	</select>
+
+	<select id="getProductList" resultMap="productorderdetail">
+		SELECT p.*, pc1.*, od.id odid, p.id pid, od.cost odcost, pc1.name pc1name
+		FROM tb_order_detail od,tb_product p,tb_product_category pc1
+		WHERE od.productId=p.id AND p.categoryLevel1Id=pc1.id
+
+	</select>
+
+
 </mapper>

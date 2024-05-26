@@ -27,12 +27,12 @@ public interface ProviderService {
 	
 	/**
 	 * 通过条件查询-供应商表记录数
-	 * @param proName
-	 * @param proCode
+//	 * @param proName
+//	 * @param proCode
 	 * @return
 	 * @throws Exception
 	 */
-	public int getproviderCount(String proName,String proCode) throws Exception;
+	public int getproviderCount() throws Exception;
 	
 	/**
 	 * 增加供应商

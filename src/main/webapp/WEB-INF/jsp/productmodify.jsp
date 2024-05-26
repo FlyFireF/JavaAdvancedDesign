@@ -56,13 +56,11 @@
 													test="${product.fileName == null || product.fileName == ''}">
 													<input type="hidden" id="errorinfo"
 														value="${uploadFileError}" />
-													<input type="file" name="attachs" id="m_fileName" />
 													<font color="red"></font>
 												</c:when>
-												<c:otherwise>
-													<img src="${product.fileName}" width="200px" />
-												</c:otherwise>
 											</c:choose>
+											<img src="${product.fileName}" width="200px" id="avatar"/>
+											<input type="file" name="attachs" id="m_fileName" />
 										</div>
 									</div>
 

@@ -1,6 +1,8 @@
 package com.flyfiref.dsscm.service.impl;
 
+import com.flyfiref.dsscm.dao.ProductCategoryMapper;
 import com.flyfiref.dsscm.dao.ProductMapper;
+import com.flyfiref.dsscm.pojo.Order;
 import com.flyfiref.dsscm.pojo.Product;
 import com.flyfiref.dsscm.service.ProductService;
 import com.github.pagehelper.PageHelper;
@@ -15,6 +17,9 @@ import java.util.List;
 public class ProductServiceImpl implements  ProductService{
 	@Autowired
 	private ProductMapper productMapper;
+
+	@Autowired
+	private ProductCategoryMapper productCategoryMapper;
 
 	@Override
 	public Product findById(Long id) throws SQLException {
@@ -44,6 +49,18 @@ public class ProductServiceImpl implements  ProductService{
 	@Override
 	public int update(Product product) throws SQLException {
 		return productMapper.update(product);
+	}
+
+	@Override
+	public int getproductCount()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return productMapper.getProductCount();
+	}
+
+	@Override
+	public List<Product> getProductList()  throws SQLException {
+		return productMapper.getProductList();
 	}
 	
 }

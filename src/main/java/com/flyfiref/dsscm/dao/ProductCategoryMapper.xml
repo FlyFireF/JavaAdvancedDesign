@@ -9,6 +9,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from tb_product_category 
 		 where id=#{id}
 	</select>
+
+<!--	zhr: 查找子标签-->
+	<select id="findChildren" resultType="int">
+		SELECT *
+		FROM tb_product_category
+		WHERE parentId=#{id}
+	</select>
 	
 	<resultMap type="ProductCategory" id="pclist">
 	   <id column="id" property="id"/>
@@ -23,15 +30,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   </collection>
 	   </collection>
 	</resultMap>
-	
+
+<!--	zhr: 修改了联表的逻辑，原先的逻辑找不到没有子标签，会导致新添加的一二级标签因为没有子标签而显示不出来-->
 	<select id="findProductCategories" resultMap="pclist">
-		SELECT pc1.*, pc2.id pc2id, pc2.name pc2name, 
-		       pc2.parentId pc2pid, pc3.id pc3id, 
-		       pc3.name pc3name, pc3.parentId pc3pid
-		FROM tb_product_category pc1,
-		     tb_product_category pc2,
-		     tb_product_category pc3
-		WHERE pc1.id=pc2.parentId AND pc2.id =pc3.parentId
+		SELECT pc1.*,
+			   pc2.id AS pc2id, pc2.name AS pc2name, pc2.parentId AS pc2pid,
+			   pc3.id AS pc3id, pc3.name AS pc3name, pc3.parentId AS pc3pid
+		FROM tb_product_category pc1
+		LEFT JOIN tb_product_category pc2
+		ON pc1.id = pc2.parentId
+		LEFT JOIN tb_product_category pc3
+		ON pc2.id = pc3.parentId
+		WHERE pc1.type = 1 and (pc2.type = 2 OR pc2.type IS NULL) AND (pc3.type = 3 OR pc3.type IS NULL);
 	</select>
 	
 	<select id="getRootCategories" resultType="ProductCategory">
@@ -59,6 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delete" parameterType="Integer">
 		delete from
 		tb_product_category where id=#{id}
+	</delete>
+
+<!--	zhr: 批量删除-->
+	<delete id="deleteList" parameterType="java.util.List">
+		DELETE FROM tb_product_category
+		WHERE id IN
+		<foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
 	</delete>
 
 	<select id="codeIsExist" resultType="int">

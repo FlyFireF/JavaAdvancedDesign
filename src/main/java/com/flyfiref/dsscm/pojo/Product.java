@@ -26,6 +26,26 @@ public class Product implements Serializable {
 	private String pc2name;// 二级分类名称
 	private String pc3name;// 三级分类名称
 
+	private OrderDetail orderDetail;
+
+	public OrderDetail getOrderDetail() {
+		return orderDetail;
+	}
+
+	public void setOrderDetail(OrderDetail orderDetail) {
+		this.orderDetail = orderDetail;
+	}
+
+	private List<OrderDetail> orderDetails;
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
 	private List<Order> orders;
 
 	public String getPc1name() {

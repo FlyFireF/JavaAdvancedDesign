@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public interface ProductCategoryService{
+public interface ProductCategoryService {
 	/**
 	 * 根据ID查询商品分类
 	 * @param id
 	 * @return
 	 * @throws SQLException
 	 */
-	public ProductCategory findById(long id) throws SQLException;
+	public ProductCategory findById(Integer id) throws SQLException;
 	
 	//查询全部商品分类
 	public List<ProductCategory> findProductCategories();
@@ -30,12 +30,12 @@ public interface ProductCategoryService{
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<ProductCategory> getRootCategories(Long parentId) throws SQLException;
+	public List<ProductCategory> getRootCategories(Integer parentId) throws SQLException;
 	/**
 	 * 删除商品分类
 	 * @throws SQLException
 	 */
-	public int delete( long id) throws SQLException;
+	public int delete( Integer id) throws SQLException;
 	/**
 	 * 新增商品分类
 	 */

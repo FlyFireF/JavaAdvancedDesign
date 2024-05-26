@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flyfiref.dsscm.dao.OrderDetailMapper">
+
+
+
+    <select id="getOrderDetailListByProductId" resultType="orderDetail">
+        select od.*, p.*,pc.id,od.id odid,p.id pid
+        from tb_order_detail od, tb_product p,tb_product_category pc
+        where productId = p.id and pc.id=p.categoryLevel1Id
+        <if test="productId != null and productId>0">
+            and productId=#{id}
+        </if>
+    </select>
+
+    <resultMap type="OrderDetail" id="orderDetailResultMap">
+        <id column="odid" property="id"/>
+        <result column="cost" property="cost"/>
+        <association property="product" javaType="Product" column="pid" foreignColumn="id" resultMap="productResultMap"/>
+    </resultMap>
+
+    <resultMap type="Product" id="productResultMap">
+        <id column="pid" property="id"/>
+        <result column="categoryLevel1Id" property="categoryLevel1Id"/>
+    </resultMap>
+
+</mapper>

@@ -27,6 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	           and o.status=#{status}
 	       </if>
 	</select>
+
+	<select id="getOrder" resultMap="orders">
+		SELECT *,o.id oid,p.id pid,o.creationDate ocreationDate,o.createdBy ocreatedBy,od.quantity odstock
+		FROM tb_order o,tb_order_detail od,tb_product p
+		WHERE o.id=od.orderId AND od.productId=p.id
+	</select>
 	
 	<insert id="saveOrder" parameterType="Order">
 		INSERT INTO tb_order ( userName, customerPhone,  userAddress,  
@@ -79,6 +85,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="cost != null">cost=#{cost},</if>
 		</trim>
 	</update>
+
+	<select id="getOrderCount" resultType="Int">
+		select count(1) as count from tb_order o
+		<where>
+			<if test="id != null and id != ''">
+			</if>
+			<if test="serialNumber != null and serialNumber != ''">
+			</if>
+		</where>
+	</select>
+
 	
 	
 </mapper>

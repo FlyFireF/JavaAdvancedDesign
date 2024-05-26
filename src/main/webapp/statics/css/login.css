@@ -15,7 +15,8 @@ html{*overflow:auto;}
 .login-box .username input{background:url(../img/userinput.png);font-size:14px; font-weight:bold;color:#33AED8;}
 .login-box .psw{ top:267px;}
 .login-box .psw input { background:url(../img/passwordinput.png);}
-
+.login-box .usrOrPwdErr{position:absolute;top:337px;left:67px;}
+.login-box .isPwdRem{position:absolute;top:317px;left:67px;}
 
 #btn{ position:absolute; left:409px; top:317px;}
 #btn input{ width:133px; height:39px; background:url(../img/loginbtn.png); border:none; outline:none; cursor:pointer; font-size:16px; font-weight:bold;}
