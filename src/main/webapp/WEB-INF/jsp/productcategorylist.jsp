@@ -31,6 +31,8 @@
                                         data-toggle="tab">${pc1.name}</a>
                                 </li>
                             </c:forEach>
+                            <%--00002  --%>
+                            <%--00002 在foreach后添加两个按钮，添加一级标签和删除一级标签--%>
                             <li role="presentation" class="add-tab-button">
                                 <a href="#" data-toggle="modal" data-target="#addP1Category">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加一级商品分类
@@ -42,6 +44,7 @@
                                 </a>
                             </li>
                         </ul>
+                        <%-- 00000 --%>
                         <!-- Tab panes -->
                         <div class="tab-content" id="ppclist">
                             <c:forEach items="${ppclist}" var="p1">
@@ -52,6 +55,8 @@
                                                 <ul class="list-group">
                                                     <c:if test="${not empty p2.id}">
                                                         <li class="list-group-item active dropdown">
+                                                                <%-- 00002 --%>
+                                                                <%-- zhr:修改每个二级标签面板原先的addp按钮，使其点击后弹出上面的pmenu弹窗 --%>
                                                             <div class="dropdown-menu pull-right pmenu"
                                                                  aria-labelledby="dropdownMenuButton">
                                                                 <button class="dropdown-item" style="width: 100%"><font color="black">添加</font></button>
@@ -66,6 +71,7 @@
                                                             <span class="glyphicon glyphicon-plus"
                                                                   aria-hidden="true"></span>
                                                             </button>
+                                                                        <%-- 00000 --%>
                                                                 ${p2.id} | ${p2.name}
                                                         </li>
                                                     </c:if>
@@ -85,6 +91,8 @@
                                         </c:forEach>
                                     </div>
                                     <div style="text-align: center; margin-top: auto; margin-bottom: auto;">
+                                            <%-- 00002 --%>
+                                            <%-- zhr:每个一级页面都添加一个“添加二级商品分类”的按钮 --%>
                                         <button class="addmodal" type="button" data-toggle="modal"
                                                 data-target="#addP2Category" style="margin: auto"
                                                 ppid="${p1.id}" ppname="${p1.name}">
@@ -166,6 +174,8 @@
     </div>
 </div>
 
+<%-- 00002 --%>
+<%-- zhr:新增模态对话框，用于添加一级标签 --%>
 <div class="modal fade" id="addP1Category" tabindex="-1" role="dialog" aria-labelledby="addP1CategoryLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -204,7 +214,10 @@
         </div>
     </div>
 </div>
+<%-- 00000 --%>
 
+<%-- 00002 --%>
+<%-- zhr:新增模态对话框，用于添加二级标签 --%>
 <div class="modal fade" id="addP2Category" tabindex="-1" role="dialog" aria-labelledby="addP2CategoryLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -253,6 +266,7 @@
         </div>
     </div>
 </div>
+<%-- 00000 --%>
 
 <script type="text/javascript">
     $(".sidebar-wrapper .nav li:eq(1)").addClass("active");

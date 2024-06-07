@@ -32,15 +32,15 @@ public class IndexController {
     private ProviderService providerService;
 
     @RequestMapping(value = "/sys/main.html")
-    public String getCounts(HttpServletRequest request){
+    public String getStatistics(HttpServletRequest request){
         int providerCount = 0;
         int productCount = 0;
         int orderCount = 0;
         float totalCost = 0.00f;
         try {
-            providerCount = providerService.getproviderCount();
-            productCount = productService.getproductCount();
-            orderCount = orderService.getorderCount();
+            providerCount = providerService.getProviderCount();
+            productCount = productService.getProductCount();
+            orderCount = orderService.getOrderCount();
             List<Order> olist = orderService.getOrder();
             for (Order order : olist) {
                 totalCost += order.getCost();

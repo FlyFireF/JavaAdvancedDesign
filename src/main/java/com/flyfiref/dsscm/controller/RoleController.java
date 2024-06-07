@@ -3,6 +3,7 @@ package com.flyfiref.dsscm.controller;
 import com.flyfiref.dsscm.pojo.Role;
 import com.flyfiref.dsscm.pojo.User;
 import com.flyfiref.dsscm.service.RoleService;
+import com.flyfiref.dsscm.service.UserService;
 import com.flyfiref.dsscm.tools.Constants;
 import com.alibaba.fastjson.JSONArray;
 import com.mysql.cj.util.StringUtils;
@@ -27,6 +28,8 @@ public class RoleController {
 
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private UserService userService;
 	@RequestMapping(value = "/error.html")
 	public String roleError(Model model) {
 		model.addAttribute("msg","您无权访问！");
@@ -112,6 +115,27 @@ public class RoleController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+		return JSONArray.toJSONString(resultMap);
+	}
+
+	@RequestMapping(value = "/getUserCount.json", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getUserCount(@RequestParam("id") String id) {
+		HashMap<String, Integer> resultMap = new HashMap<String, Integer>();
+		if (StringUtils.isNullOrEmpty(id)) {
+			resultMap.put("userCount", 0);
+		} else {
+			try {
+				int userCount = userService.getUserCount(null, Integer.parseInt(id));
+				resultMap.put("userCount", userCount);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				resultMap.put("userCount", 0);
+			} catch (Exception e) {
+				e.printStackTrace();
+				resultMap.put("userCount", 0);
 			}
 		}
 		return JSONArray.toJSONString(resultMap);

@@ -32,7 +32,7 @@ public interface ProviderService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getproviderCount() throws Exception;
+	public int getProviderCount() throws Exception;
 	
 	/**
 	 * 增加供应商

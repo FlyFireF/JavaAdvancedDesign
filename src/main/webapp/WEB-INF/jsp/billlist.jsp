@@ -10,7 +10,6 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-
 			<div class="col-md-12">
 				<div class="card card-plain">
 					<div class="content">
@@ -26,8 +25,8 @@
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
-										<label>供应商： &nbsp;&nbsp;</label> <br> <select
-											name="queryProviderId" id="queryProviderId"class="form-control border-input">
+										<label>供应商： &nbsp;&nbsp;</label> <br>
+										<select name="queryProviderId" id="queryProviderId"class="form-control border-input">
 											<c:if test="${providerList != null }">
 												<option value="">--请选择--</option>
 												<c:forEach var="provider" items="${providerList}">
@@ -42,8 +41,7 @@
 								<div class="col-md-2">
 									<div class="form-group">
 										<label for="exampleInputEmail1">是否付款： &nbsp;&nbsp;</label><br>
-										<select name="queryIsPayment"id="queryIsPayment"
-											class="form-control border-input">
+										<select name="queryIsPayment"id="queryIsPayment" class="form-control border-input">
 											<option value="">--请选择--</option>
 											<option value="1" ${queryIsPayment== 1 ? "selected=\"selected\"":"" }>未付款</option>
 											<option value="2" ${queryIsPayment== 2 ? "selected=\"selected\"":"" }>已付款</option>
@@ -124,33 +122,32 @@
 <%@include file="/WEB-INF/jsp/common/foot.jsp"%>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(2)").addClass("active");
-	// 在页面加载完毕后执行
+	// 监听下拉列表的change事件
+	document.getElementById("queryProviderId").addEventListener("change", function () {
+		// 获取选中的值
+		var selectedValue = this.value;
+		// 将选中的值设置为隐藏输入框的值
+		document.getElementsByName("queryProviderId")[0].value = selectedValue;
+	});
+	// 监听下拉列表的change事件
+	document.getElementById("queryIsPayment").addEventListener("change", function () {
+		// 获取选中的值
+		var selectedValue = this.value;
+		// 将选中的值设置为隐藏输入框的值
+		document.getElementsByName("queryIsPayment")[0].value = selectedValue;
+	});
 	$(document).ready(function() {
-		// 监听输入框和下拉框的变化事件
-		$('#queryProductName, #queryProviderId,#queryIsPayment').on('change', function () {
-			console.log(111)
-			// 获取输入框和下拉框的值
-			var queryProductName = $('#queryProductName').val();
-			var queryProviderId = $('#queryProviderId').val();
-			var queryIsPayment = $('#queryIsPayment').val();
-			// 发送 AJAX 请求到后端进行信息查询更新
-			$.ajax({
-				type: 'POST',
-				url: '${pageContext.request.contextPath }/sys/bill/update.html',
-				dataType:'json',
-				data: {
-					queryProductName: queryProductName,
-					queryProviderId: queryProviderId,
-					queryIsPayment: queryIsPayment,
-					pageIndex: 1 // 重置页码为1
-				},
-				success: function (data) {
-					// 将查询结果更新到页面
-					$('.table-responsive').html(data.billListHtml);
-				}
-			});
+		// 监听两个下拉列表的change事件
+		$("select[name='queryProviderId'], select[name='queryIsPayment']").on("change", function () {
+			// 获取选中的值
+			var selectedValue = $(this).val();
+			// 将选中的值设置为隐藏输入框的值
+			$("input[name='queryProviderId'],input[name='queryIsPayment']").val(selectedValue);
+			// 提交表单
+			$("form").submit();
 		});
 	});
+
 </script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/statics/js/billlist.js"></script>

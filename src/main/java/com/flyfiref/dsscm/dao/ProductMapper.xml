@@ -77,12 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getProductCount" resultType="Int">
 		select count(1) as count from tb_product p
-		<where>
-			<if test="id != null and id != ''">
-			</if>
-			<if test="name != null and name != ''">
-			</if>
-		</where>
+
 	</select>
 
 	<select id="getProductList" resultMap="productorderdetail">

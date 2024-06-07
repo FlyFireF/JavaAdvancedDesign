@@ -63,6 +63,6 @@ public interface OrderService{
 	 * @return
 	 * @throws Exception
 	 */
-	public int getorderCount() throws Exception;
+	public int getOrderCount() throws Exception;
 	
 }

@@ -69,115 +69,122 @@ public class UserController extends BaseController {
 		model.addAttribute("queryUserRole", queryUserRole);
 		return "userlist";
 	}
-	@RequestMapping("/update.html")
-	@ResponseBody
-	public Map getupdateList(@RequestParam(value = "queryname", required = false) String queryUserName,
-							 @RequestParam(value = "queryUserRole", required = false) Integer queryUserRole,
-							 @RequestParam(value = "pageIndex", required = false) Integer pageIndex) {
-		logger.info("getUserList ---- > queryUserName: " + queryUserName);
-		logger.info("getUserList ---- > queryUserRole: " + queryUserRole);
-		logger.info("getUserList ---- > pageIndex: " + pageIndex);
-		PageInfo<User> upi = null;
+//	@RequestMapping("/update.html")
+//	@ResponseBody
+//	public Map getupdateList(@RequestParam(value = "queryname", required = false) String queryUserName,
+//							 @RequestParam(value = "queryUserRole", required = false) Integer queryUserRole,
+//							 @RequestParam(value = "pageIndex", required = false) Integer pageIndex) {
+//		logger.info("getUserList ---- > queryUserName: " + queryUserName);
+//		logger.info("getUserList ---- > queryUserRole: " + queryUserRole);
+//		logger.info("getUserList ---- > pageIndex: " + pageIndex);
+//		PageInfo<User> upi = null;
+//		List<Role> roleList = null;
+//		// 设置页面容量
+//		int pageSize = Constants.pageSize;
+//		// 页码为空默认分第一页
+//		if (null == pageIndex) {
+//			pageIndex = 1;
+//		}
+//		if (queryUserName == null) {
+//			queryUserName = "";
+//		}
+//		try {
+//			upi = userService.getUserList(queryUserName, queryUserRole,
+//					pageIndex, pageSize);
+//			roleList = roleService.getRoleList();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		// 将用户列表转换成HTML格式的字符串返回给前端
+//		String userListHtml = convertUserListToHtml(upi, roleList, queryUserName, queryUserRole);
+//		Map<String,String> map = new HashMap<String,String>();
+//		map.put("userListHtml", userListHtml);
+//		return map;
+//	}
+//
+//	// 将用户列表转换成HTML格式的方法
+//	private String convertUserListToHtml(PageInfo<User> upi, List<Role> roleList, String queryUserName, Integer queryUserRole) {
+//		StringBuilder htmlBuilder = new StringBuilder();
+//
+//		// 在这里添加HTML头部，例如表格的开始标签和表头
+//		htmlBuilder.append("<table class='table table-striped'>");
+//		htmlBuilder.append("<thead>");
+//		htmlBuilder.append("<tr>");
+//		htmlBuilder.append("<th>用户编码</th>");
+//		htmlBuilder.append("<th>用户名</th>");
+//		htmlBuilder.append("<th>性别</th>");
+//		htmlBuilder.append("<th>年龄</th>");
+//		htmlBuilder.append("<th>电话</th>");
+//		htmlBuilder.append("<th>角色</th>");
+//		htmlBuilder.append("</tr>");
+//		htmlBuilder.append("</thead>");
+//		htmlBuilder.append("<tbody>");
+//
+//		// 遍历用户列表数据，将每个用户的信息添加到HTML中
+//		for (User user : upi.getList()) {
+//			htmlBuilder.append("<tr>");
+//			htmlBuilder.append("<td>").append(user.getUserCode()).append("</td>");
+//			htmlBuilder.append("<td>").append(user.getUserName()).append("</td>");
+//			htmlBuilder.append("<td>").append(setGender(user)).append("</td>");
+//			htmlBuilder.append("<td>").append(user.getAge()).append("</td>");
+//			htmlBuilder.append("<td>").append(user.getPhone()).append("</td>");
+//			htmlBuilder.append("<td>").append(setUserRole(user)).append("</td>");
+////			String roleName = getRoleName(user.getId(), roleList);
+////			htmlBuilder.append("<td>").append(roleName).append("</td>");
+//			htmlBuilder.append("</tr>");
+//		}
+//
+//		// 在这里添加HTML尾部，例如表格的结束标签
+//		htmlBuilder.append("</tbody>");
+//		htmlBuilder.append("</table>");
+//
+//		return htmlBuilder.toString();
+//	}
+//
+//
+//	private String setGender(User user) {
+//		if (user.getGender() == 2) {
+//			return "男";
+//		}
+//		if (user.getGender() == 1) {
+//			return "女";
+//		}
+//		return "未知性别";
+//	}
+//	private String setUserRole(User user) {
+//		if (user.getUserRole() == 2) {
+//			return "经理";
+//		}
+//		if (user.getUserRole() == 1) {
+//			return "系统管理者";
+//		}
+//		if (user.getUserRole() == 3) {
+//			return "普通员工";
+//		}
+//		if (user.getUserRole() == 4) {
+//			return "人事部员工";
+//		}
+//		if (user.getUserRole() == 5) {
+//			return "采购部员工";
+//		}
+//		if (user.getUserRole() == 6) {
+//			return "物资部员工";
+//		}
+//		if (user.getUserRole() == 7) {
+//			return "销售部员工";
+//		}
+//		return "未知角色";
+//	}
+	@RequestMapping(value = "/add.html", method = RequestMethod.GET)
+	public String addUser(Model model,@ModelAttribute("user") User user) {
 		List<Role> roleList = null;
-		// 设置页面容量
-		int pageSize = Constants.pageSize;
-		// 页码为空默认分第一页
-		if (null == pageIndex) {
-			pageIndex = 1;
-		}
-		if (queryUserName == null) {
-			queryUserName = "";
-		}
 		try {
-			upi = userService.getUserList(queryUserName, queryUserRole,
-					pageIndex, pageSize);
 			roleList = roleService.getRoleList();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		// 将用户列表转换成HTML格式的字符串返回给前端
-		String userListHtml = convertUserListToHtml(upi, roleList, queryUserName, queryUserRole);
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userListHtml", userListHtml);
-		return map;
-	}
-
-	// 将用户列表转换成HTML格式的方法
-	private String convertUserListToHtml(PageInfo<User> upi, List<Role> roleList, String queryUserName, Integer queryUserRole) {
-		StringBuilder htmlBuilder = new StringBuilder();
-
-		// 在这里添加HTML头部，例如表格的开始标签和表头
-		htmlBuilder.append("<table class='table table-striped'>");
-		htmlBuilder.append("<thead>");
-		htmlBuilder.append("<tr>");
-		htmlBuilder.append("<th>用户编码</th>");
-		htmlBuilder.append("<th>用户名</th>");
-		htmlBuilder.append("<th>性别</th>");
-		htmlBuilder.append("<th>年龄</th>");
-		htmlBuilder.append("<th>电话</th>");
-		htmlBuilder.append("<th>角色</th>");
-		htmlBuilder.append("</tr>");
-		htmlBuilder.append("</thead>");
-		htmlBuilder.append("<tbody>");
-
-		// 遍历用户列表数据，将每个用户的信息添加到HTML中
-		for (User user : upi.getList()) {
-			htmlBuilder.append("<tr>");
-			htmlBuilder.append("<td>").append(user.getUserCode()).append("</td>");
-			htmlBuilder.append("<td>").append(user.getUserName()).append("</td>");
-			htmlBuilder.append("<td>").append(setGender(user)).append("</td>");
-			htmlBuilder.append("<td>").append(user.getAge()).append("</td>");
-			htmlBuilder.append("<td>").append(user.getPhone()).append("</td>");
-			htmlBuilder.append("<td>").append(setUserRole(user)).append("</td>");
-//			String roleName = getRoleName(user.getId(), roleList);
-//			htmlBuilder.append("<td>").append(roleName).append("</td>");
-			htmlBuilder.append("</tr>");
-		}
-
-		// 在这里添加HTML尾部，例如表格的结束标签
-		htmlBuilder.append("</tbody>");
-		htmlBuilder.append("</table>");
-
-		return htmlBuilder.toString();
-	}
-
-
-	private String setGender(User user) {
-		if (user.getGender() == 2) {
-			return "男";
-		}
-		if (user.getGender() == 1) {
-			return "女";
-		}
-		return "未知性别";
-	}
-	private String setUserRole(User user) {
-		if (user.getUserRole() == 2) {
-			return "经理";
-		}
-		if (user.getUserRole() == 1) {
-			return "系统管理者";
-		}
-		if (user.getUserRole() == 3) {
-			return "普通员工";
-		}
-		if (user.getUserRole() == 4) {
-			return "人事部员工";
-		}
-		if (user.getUserRole() == 5) {
-			return "采购部员工";
-		}
-		if (user.getUserRole() == 6) {
-			return "物资部员工";
-		}
-		if (user.getUserRole() == 7) {
-			return "销售部员工";
-		}
-		return "未知角色";
-	}
-	@RequestMapping(value = "/add.html", method = RequestMethod.GET)
-	public String addUser(@ModelAttribute("user") User user) {
+		model.addAttribute("roleList", roleList);
 		return "useradd";
 	}
 
@@ -496,8 +503,7 @@ public class UserController extends BaseController {
 				e.printStackTrace();
 			}
 			if (flag) {
-				request.setAttribute(Constants.SYS_MESSAGE,
-						"修改密码成功,请退出并使用新密码重新登录！");
+				request.setAttribute(Constants.SYS_MESSAGE,"修改密码成功,请退出并使用新密码重新登录！");
 				session.removeAttribute(Constants.USER_SESSION);// session注销
 				return "login";
 			} else {

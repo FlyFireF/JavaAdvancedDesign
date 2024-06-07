@@ -50,7 +50,7 @@ public interface ProductService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getproductCount() throws Exception;
+	public int getProductCount() throws Exception;
 
 	/**
 	 * 获取订单及其下属的详情记录

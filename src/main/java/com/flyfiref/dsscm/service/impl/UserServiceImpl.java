@@ -3,6 +3,7 @@ package com.flyfiref.dsscm.service.impl;
 import com.flyfiref.dsscm.dao.UserMapper;
 import com.flyfiref.dsscm.pojo.User;
 import com.flyfiref.dsscm.service.UserService;
+import com.flyfiref.dsscm.tools.Constants;
 import com.flyfiref.dsscm.tools.RsaUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,12 +20,12 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	
 	@Override
-	public User login(String userCode, String userPassword, String priKey) throws Exception {
+	public User login(String userCode, String userPassword) throws Exception {
 		User user = null;
 		user = userMapper.getLoginUser(userCode);
 		//匹配密码
 		if(null != user){
-			String dec = RsaUtil.decryptByPrivateKey(user.getUserPassword(),priKey);
+			String dec = RsaUtil.decryptByPrivateKey(user.getUserPassword(), Constants.PRI_KEY);
 			if(!dec.equals(userPassword))
 				user = null;
 		}

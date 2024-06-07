@@ -18,15 +18,15 @@
 							<div class="row">
 								<div class="col-md-4">
 									<div class="form-group">
-										<label for="queryname">顾客姓名：</label> <input name="queryname" id="queryname"
+										<label for="queryname">收货人姓名：</label> <input name="queryname" id="queryname"
 											type="text" value="${queryname}"
 											class="form-control border-input">
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label for="queryUserRole">订单状态</label> <select
-											class="form-control border-input" name="status" id="status">
+										<label for="queryUserRole">订单状态</label>
+										<select class="form-control border-input" name="status" id="status">
 											<option value="0">- - - 请选择 - - -</option>
 											<c:forEach items="${statuslist}" begin="1" var="keyword"
 												varStatus="id">
@@ -144,29 +144,22 @@
 <%@include file="/WEB-INF/jsp/common/foot.jsp"%>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(3)").addClass("active");
-	// 在页面加载完毕后执行
+	// 监听下拉列表的change事件
+	document.getElementById("status").addEventListener("change", function () {
+		// 获取选中的值
+		var selectedValue = this.value;
+		// 将选中的值设置为隐藏输入框的值
+		document.getElementsByName("status")[0].value = selectedValue;
+	});
 	$(document).ready(function() {
-		// 监听用户名输入框和用户权限下拉框的变化事件
-		$('#queryname, #status').on('change', function () {
-			console.log(111)
-			// 获取输入框和下拉框的值
-			var queryname = $('#queryname').val();
-			var status = $('#status').val();
-			// 发送 AJAX 请求到后端进行信息查询更新
-			$.ajax({
-				type: 'POST',
-				url: '${pageContext.request.contextPath }/sys/order/update.html',
-				dataType:'json',
-				data: {
-					queryname: queryname,
-					status: status,
-					pageIndex: 1 // 重置页码为1
-				},
-				success: function (data) {
-					// 将查询结果更新到页面
-					$('.table-responsive').html(data.orderListHtml);
-				}
-			});
+		// 监听下拉列表的change事件
+		$("#status").on("change", function () {
+			// 获取选中的值
+			var selectedValue = $(this).val();
+			// 将选中的值设置为隐藏输入框的值
+			$("input[name='status']").val(selectedValue);
+			// 提交表单
+			$("form").submit();
 		});
 	});
 </script>

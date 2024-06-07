@@ -36,7 +36,7 @@
 
     <update id="update" parameterType="News">
         update tb_news
-        <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">
+        <trim prefix=" set" suffixOverrides="," suffix="where id = #{id}">
             <if test="title != null">title=#{title},</if>
             <if test="content != null">content=#{content},</if>
         </trim>

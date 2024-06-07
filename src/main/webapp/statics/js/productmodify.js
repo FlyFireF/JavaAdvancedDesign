@@ -239,6 +239,7 @@ $(function() {
 	});
 	saveBtn.bind("click", function() {
 			if (confirm("是否确认提交数据")) {
+				// 00004 删除一段代码，现在直接提交名单
 				$("#productForm").submit();
 			}
 	});

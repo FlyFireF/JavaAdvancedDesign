@@ -52,7 +52,7 @@ public class ProductServiceImpl implements  ProductService{
 	}
 
 	@Override
-	public int getproductCount()
+	public int getProductCount()
 			throws Exception {
 		// TODO Auto-generated method stub
 		return productMapper.getProductCount();

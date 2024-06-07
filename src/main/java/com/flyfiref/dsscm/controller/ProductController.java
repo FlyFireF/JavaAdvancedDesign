@@ -231,6 +231,7 @@ public class ProductController {
 				if (!targetFile.exists()) {
 					targetFile.mkdirs();
 				}
+				// zhr:00005 删除了一部分对filrname的修改，原先的代码图讲filename存为绝对路径，实际上只需要文件名
 				// 保存
 				try {
 					attach.transferTo(targetFile);

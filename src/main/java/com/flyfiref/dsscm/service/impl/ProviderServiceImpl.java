@@ -30,7 +30,7 @@ public class ProviderServiceImpl implements ProviderService {
 	}
 
 	@Override
-	public int getproviderCount()
+	public int getProviderCount()
 			throws Exception {
 		// TODO Auto-generated method stub
 		return providerMapper.getProviderCount();

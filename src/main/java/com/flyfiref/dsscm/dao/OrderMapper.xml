@@ -88,12 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getOrderCount" resultType="Int">
 		select count(1) as count from tb_order o
-		<where>
-			<if test="id != null and id != ''">
-			</if>
-			<if test="serialNumber != null and serialNumber != ''">
-			</if>
-		</where>
+
 	</select>
 
 	

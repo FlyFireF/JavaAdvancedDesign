@@ -21,9 +21,9 @@
 										</div>
 										<div class="footer">
 											<hr />
-											<div class="stats">
+											<%--<div class="stats">
 												<i class="ti-reload"></i> Updated now
-											</div>
+											</div>--%>
 										</div>
 									</div>
 								</div>
@@ -46,9 +46,9 @@
 										</div>
 										<div class="footer">
 											<hr />
-											<div class="stats">
+											<%--<div class="stats">
 												<i class="ti-calendar"></i> Last day
-											</div>
+											</div>--%>
 										</div>
 									</div>
 								</div>
@@ -71,9 +71,9 @@
 										</div>
 										<div class="footer">
 											<hr />
-											<div class="stats">
+											<%--<div class="stats">
 												<i class="ti-timer"></i> In the last hour
-											</div>
+											</div>--%>
 										</div>
 									</div>
 								</div>
@@ -96,9 +96,9 @@
 										</div>
 										<div class="footer">
 											<hr />
-											<div class="stats">
+											<%--<div class="stats">
 												<i class="ti-reload"></i> Updated now
-											</div>
+											</div>--%>
 										</div>
 									</div>
 								</div>
@@ -115,13 +115,13 @@
 									<div class="content">
 										<div id="chartActivity" class="ct-chart"></div>
 										<div class="footer">
-											<div class="chart-legend">
+											<%--<div class="chart-legend">
 												<font color="#5f9ea0">销售额</font>
-											</div>
+											</div>--%>
 											<hr>
-											<div class="stats">
+											<%--<div class="stats">
 												<i class="ti-reload"></i> Updated now
-											</div>
+											</div>--%>
 										</div>
 									</div>
 								</div>

@@ -24,9 +24,8 @@
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
-										<label for="categoryLevel1Id">商品类别 &nbsp;&nbsp;</label> <select
-											class="form-control border-input" name="categoryLevel1Id"
-											id="categoryLevel1Id">
+										<label for="categoryLevel1Id">商品类别 &nbsp;&nbsp;</label>
+										<select class="form-control border-input" name="categoryLevel1Id" id="categoryLevel1Id">
 											<option value="0">- - - 请选择 - - -</option>
 											<c:forEach var="pc" items="${pcList}">
 												<option
@@ -112,63 +111,26 @@
 	</div>
 </div>
 <%@ include file="common/foot.jsp"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/statics/js/productlist.js"></script>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(1)").addClass("active");
-	// 在页面加载完毕后执行
+	// 监听下拉列表的change事件
+	document.getElementById("categoryLevel1Id").addEventListener("change", function () {
+		// 获取选中的值
+		var selectedValue = this.value;
+		// 将选中的值设置为隐藏输入框的值
+		document.getElementsByName("categoryLevel1Id")[0].value = selectedValue;
+	});
 	$(document).ready(function() {
-		// 监听用户名输入框和用户权限下拉框的变化事件
-		$('#queryname, #categoryLevel1Id').on('change', function () {
-			// 获取输入框和下拉框的值
-			var queryname = $('#queryname').val();
-			var categoryLevel1Id = $('#categoryLevel1Id').val();
-			// 发送 AJAX 请求到后端进行信息查询更新
-			$.ajax({
-				type: 'POST',
-				url: '${pageContext.request.contextPath }/sys/user/update.html',
-				dataType:'json',
-				data: {
-					queryname: queryname,
-					categoryLevel1Id: categoryLevel1Id,
-					pageIndex: 1 // 重置页码为1
-				},
-				success: function (data) {
-					// 将查询结果更新到页面
-					$('.table-responsive').html(data.productListHtml);
-				}
-			});
+		// 监听下拉列表的change事件
+		$("#categoryLevel1Id").on("change", function () {
+			// 获取选中的值
+			var selectedValue = $(this).val();
+			// 将选中的值设置为隐藏输入框的值
+			$("input[name='categoryLevel1Id']").val(selectedValue);
+			// 提交表单
+			$("form").submit();
 		});
 	});
-
-	// 独立的函数，用于在用户名或用户权限变化时更新用户列表
-	$(document).ready(function() {
-		$('#queryname, #categoryLevel1Id').on('change', function() {
-			updateProductList();
-		});
-	});
-
-	// 更新用户列表的函数
-	function updateProductList() {
-		// 获取输入框和下拉框的值
-		var queryname = $('#queryname').val();
-		var categoryLevel1Id = $('#categoryLevel1Id').val();
-
-		// 发送 AJAX 请求到后端进行信息查询更新
-		$.ajax({
-			type: 'POST',
-			url: '${pageContext.request.contextPath }/sys/product/update.html',
-			dataType: 'json',
-			data: {
-				queryname: queryname,
-				categoryLevel1Id: categoryLevel1Id,
-				pageIndex: 1 // 重置页码为1
-			},
-			success: function (data) {
-				// 将查询结果更新到页面
-				$('.table-responsive').html(data.productListHtml);
-
-			}
-		});
-	}
 </script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/statics/js/productlist.js"></script>

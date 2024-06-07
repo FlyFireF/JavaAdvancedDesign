@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public int getorderCount()
+	public int getOrderCount()
 			throws Exception {
 		// TODO Auto-generated method stub
 		return orderMapper.getOrderCount();

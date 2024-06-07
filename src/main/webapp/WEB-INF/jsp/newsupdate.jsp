@@ -19,7 +19,7 @@
                             <!--div的class 为error是验证错误，ok是验证成功-->
                             <div class="col-md-6">
                                 <label for="creationDate">创建时间：</label> <input type="text"
-                                                                               name="creationDate" id="creationDate" class="form-control border-input"
+                                                                               id="creationDate" class="form-control border-input"
                                                                                value="${news.creationDate }" readonly="readonly">
                             </div>
                             <div class="col-md-6">

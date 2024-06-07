@@ -41,7 +41,7 @@ public class LoginController {
 						  HttpSession session) throws Exception {
 		logger.debug("doLogin====================================");
 		// 调用service方法，进行用户匹配
-		User user = userService.login(userCode, userPassword,Constants.PRI_KEY);
+		User user = userService.login(userCode, userPassword);
 		if (null != user) {// 登录成功
 			// 放入session
 			session.setAttribute(Constants.USER_SESSION, user);

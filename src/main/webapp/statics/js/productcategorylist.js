@@ -12,6 +12,7 @@ function deleteproduct(obj) {
             if (data.delResult == "true") {//删除成功：移除删除行
                 alert("删除商品类别成功");
                 // zhr: 删除数据后同步删除页面上的元素和子标签对应的元素
+                //删除二级后.查找pid为被删除的二级的id的三级 00006
                 obj.parents("li").remove();
                 $('li[pid=' + obj.attr("pid") + ']').remove();
                 var childsp = $('[ppid=' + obj.attr("pid") + ']').parent();
@@ -62,7 +63,7 @@ $(function () {
             }
         });
     });
-
+    //zhr:处理添加一级标签
     $(".addp1").on("click", function () {
         //alert("add ======  "+$("#pp2id").val()+ " -- " + $("#ppcode").val()+ " -- " +$("#ppname").val());
         var postData = {
@@ -92,6 +93,7 @@ $(function () {
         });
     });
 
+    //zhr:处理添加二级标签
     $(".addp2").on("click", function () {
         //alert("add ======  "+$("#pp2id").val()+ " -- " + $("#ppcode").val()+ " -- " +$("#ppname").val());
         var postData = {
@@ -123,7 +125,7 @@ $(function () {
 
     $(".delete").on("click", function () {
         productcategoryObj = $(this);
-        var del = confirm("你确定要删除商品【" + productcategoryObj.attr("pname") + "】吗？");
+        var del = confirm("你确定要删除商品类别【" + productcategoryObj.attr("pname") + "】吗？");
         if (del) {
             deleteproduct(productcategoryObj);
         } else {
@@ -131,6 +133,7 @@ $(function () {
         }
     });
 
+    //zhr:询问用户是否删除三级标签，原本就有
     $(".addmodal").on("click", function () {
         var obj = $(this);
         $(".pp1id").val(obj.attr("ppid"));
@@ -139,6 +142,7 @@ $(function () {
         $("#pp2id").next().val(obj.attr("pname"));
     });
 
+    //zhr:二级标签面板弹窗按钮共用该函数
     $(".pmenu button").on("click", function () {
         var action = $(this).text();
         var obj = $(this).closest('.dropdown').find('#dropdownMenuButton');
@@ -149,6 +153,8 @@ $(function () {
             $("#pp2id").next().val(obj.attr("pname"));
             $("#addpp").modal("show");
         } else if (action === '删除') {
+            //如果点的是删除按钮
+            //zhr:新增删除按钮，删除按钮所在的二级标签
             var del = confirm("你确定要删除二级商品标签【" + obj.attr("pname") + "】吗？");
             if (del) {
                 deleteproduct(obj);
@@ -158,9 +164,10 @@ $(function () {
         }
     });
 
+    //删除一级标签
     $("#deleteP1Category").on("click", function () {
         var currentPC1 = $($('li[role="presentation"].active'));
-        var del = confirm("你确定要删除商品【" + currentPC1.attr("pname") + "】吗？");
+        var del = confirm("你确定要删除商品类别【" + currentPC1.attr("pname") + "】吗？");
         if (del) {
             deleteproduct(currentPC1);
         } else {

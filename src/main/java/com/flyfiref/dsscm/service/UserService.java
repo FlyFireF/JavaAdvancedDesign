@@ -12,7 +12,7 @@ public interface UserService {
 	 * @param userPassword
 	 * @return
 	 */
-	public User login(String userCode,String userPassword, String priKey) throws Exception;
+	public User login(String userCode,String userPassword) throws Exception;
 	
 	/**
 	 * 增加用户信息

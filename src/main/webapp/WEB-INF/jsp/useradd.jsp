@@ -113,17 +113,22 @@
 											<div class="form-group">
 												<label>用户角色 <small> UserRole</small> </label>
 												<select class="form-control border-input" name="userRole" id="userRole">
-													<option value="">- - - 请选择 - - -</option>
-													<option value="1">系统管理员</option>
-													<option value="2">经理</option>
-													<option value="3">普通员工</option>
-													<option value="4">人事部员工</option>
-													<option value="5">采购部员工</option>
-													<option value="6">物资部员工</option>
-													<option value="7">销售部员工</option>
-												</select>
+													<option value="0">- - - 请选择 - - -</option>
+													<c:forEach var="role" items="${roleList}">
+														<option
+																<c:if test="${role.id == queryUserRole }">selected="selected"</c:if>
+																value="${role.id}">${role.roleName}</option>
+													</c:forEach>
+<%--													<option value="1">系统管理员</option>--%>
+<%--													<option value="2">经理</option>--%>
+<%--													<option value="3">普通员工</option>--%>
+<%--													<option value="4">人事部员工</option>--%>
+<%--													<option value="5">采购部员工</option>--%>
+<%--													<option value="6">物资部员工</option>--%>
+<%--													<option value="7">销售部员工</option>--%>
 
-											</select><font color="red"></font>
+												</select>
+												</select><font color="red"></font>
 											</div>
 										</div>
 										<div class="col-md-4">

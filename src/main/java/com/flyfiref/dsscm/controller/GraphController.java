@@ -126,6 +126,7 @@ public class GraphController {
             e.printStackTrace();
         }
 
+        System.out.println(categorySalesMap);
         return categorySalesMap;
     }
 }

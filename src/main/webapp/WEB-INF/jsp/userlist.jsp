@@ -24,8 +24,8 @@
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
-										<%--@declare id="queryuserrole"--%><label for="queryUserRole">用 户 权 限 &nbsp;&nbsp;</label> <select
-											class="form-control border-input" id="queryUserRole">
+										<%--@declare id="queryuserrole"--%><label for="queryUserRole">用 户 权 限 &nbsp;&nbsp;</label>
+											<select class="form-control border-input" name="queryUserRole" id="queryUserRole">
 											<option value="0">- - - 请选择 - - -</option>
 											<c:forEach var="role" items="${roleList}">
 												<option
@@ -104,33 +104,26 @@
 	</div>
 </div>
 <%@ include file="common/foot.jsp"%>
+<script src="${pageContext.request.contextPath }/statics/js/userlist.js"></script>
 <script type="text/javascript">
 	$(".sidebar-wrapper .nav li:eq(5)").addClass("active");
 	console.log(111)
-	// 在页面加载完毕后执行
-	$(document).ready(function() {
-		// 监听用户名输入框和用户权限下拉框的变化事件
-		$('#queryname, #queryUserRole').on('change', function () {
-			// 获取输入框和下拉框的值
-			var queryname = $('#queryname').val();
-			var queryUserRole = $('#queryUserRole').val();
-			// 发送 AJAX 请求到后端进行信息查询更新
-			$.ajax({
-				type: 'POST',
-				url: '${pageContext.request.contextPath }/sys/user/update.html',
-				dataType:'json',
-				data: {
-					queryname: queryname,
-					queryUserRole: queryUserRole,
-					pageIndex: 1 // 重置页码为1
-				},
-				success: function (data) {
-					// 将查询结果更新到页面
-					$('.table-responsive').html(data.userListHtml);
-				}
-			});
+	// 监听下拉列表的change事件
+	document.getElementById("queryUserRole").addEventListener("change", function () {
+		// 获取选中的值
+		var selectedValue = this.value;
+		// 将选中的值设置为隐藏输入框的值
+		document.getElementsByName("queryUserRole")[0].value = selectedValue;
+	});
+		$(document).ready(function() {
+		// 监听下拉列表的change事件
+		$("#queryUserRole").on("change", function () {
+			// 获取选中的值
+			var selectedValue = $(this).val();
+			// 将选中的值设置为隐藏输入框的值
+			$("input[name='queryUserRole']").val(selectedValue);
+			// 提交表单
+			$("form").submit();
 		});
 	});
 </script>
-<script type="text/javascript"
-		src="${pageContext.request.contextPath }/statics/js/userlist.js"></script>

@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 <!--	zhr: 修改了联表的逻辑，原先的逻辑找不到没有子标签，会导致新添加的一二级标签因为没有子标签而显示不出来-->
+	<!-- 00001 -->
 	<select id="findProductCategories" resultMap="pclist">
 		SELECT pc1.*,
 			   pc2.id AS pc2id, pc2.name AS pc2name, pc2.parentId AS pc2pid,
@@ -74,10 +75,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--	zhr: 批量删除-->
 	<delete id="deleteList" parameterType="java.util.List">
 		DELETE FROM tb_product_category
-		WHERE id IN
-		<foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
-			#{id}
-		</foreach>
+		WHERE
+		<if test="ids != null and ids.size() > 0">
+			id IN
+			<foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</if>
+		<if test="ids == null or ids.size() == 0">
+			1 = 0
+		</if>
 	</delete>
 
 	<select id="codeIsExist" resultType="int">

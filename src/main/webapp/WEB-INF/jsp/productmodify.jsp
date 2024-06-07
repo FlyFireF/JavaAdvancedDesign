@@ -50,6 +50,7 @@
 												class="form-control border-input"> <font color="red"></font>
 										</div>
 										<div class="col-md-6">
+											<%-- zhr:00003 修改了展示和修改图片的逻辑 --%>
 											<label for="attachs">图片：</label>
 											<c:choose>
 												<c:when
@@ -63,6 +64,7 @@
 											<input type="file" name="attachs" id="m_fileName" />
 										</div>
 									</div>
+									<%-- 00000 --%>
 
 									<div class="row">
 										<div class="form-group">
